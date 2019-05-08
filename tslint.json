@@ -1,0 +1,65 @@
+{
+  "defaultSeverity": "error",
+  "extends": [
+    "tslint:recommended"
+  ],
+  "jsRules": {},
+  "rules": {
+    "align": false,
+    "array-type": [true, "array"],
+    "interface-name": false,
+    "member-ordering": [
+      true,
+      {
+        "order": [
+          "public-static-field",
+          "protected-static-field",
+          "private-static-field",
+          "public-instance-field",
+          "protected-instance-field",
+          "private-instance-field",
+
+          "public-constructor",
+          "protected-constructor",
+          "private-constructor"
+        ]
+      }
+    ],
+    "no-consecutive-blank-lines": [true, 2],
+    // No console methods except assert. Taken from: https://developer.mozilla.org/en-US/docs/Web/API/Console
+    "no-console": [true, "clear", "count", "countReset", "debug", "dir", "drixml", "error", "group", "groupCollapsed",
+      "info", "log", "profile", "profileEnd", "table", "time", "timeEnd", "timeLog", "timeStamp", "trace", "warn"],
+    "no-unnecessary-callback-wrapper": true,
+    // Disabled object-literal-sort-keys because of https://github.com/palantir/tslint/issues/3586
+    "object-literal-sort-keys": false,
+    "quotemark": [true, "single", "avoid-escape", "avoid-template"],
+    "trailing-comma": [
+      true,
+      {
+        "multiline": {
+          "arrays": "always",
+          "exports": "always",
+          "functions": "never",
+          "imports": "always",
+          "objects": "always",
+          "typeLiterals": "always"
+        },
+        "esSpecCompliant": true
+      }
+    ],
+    "variable-name": [true, "check-format", "allow-trailing-underscore"],
+    "whitespace": [true,
+      "check-branch",
+      "check-decl",
+      "check-operator",
+      "check-module",
+      "check-separator",
+      "check-rest-spread",
+      "check-type",
+      "check-typecast",
+      "check-type-operator",
+      "check-preblock"
+    ]
+  },
+  "rulesDirectory": []
+}

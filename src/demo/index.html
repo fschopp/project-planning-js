@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<title>Demo: Project Planning JS</title>
+
+<main role="main" class="container">
+  <h1 class="mt-5">Demo: Project Planning JS</h1>
+  <p class="lead">Scheduling jobs on related machines, with optional preemption and splitting of jobs across machines.</p>
+  <p>Enter the scheduling instance in JSON format below. Click on the type names for API reference and schema.</p>
+  <form>
+    <div class="form-group">
+      <label for="instance">Input: <a href="https://fschopp.github.io/project-planning-js/doc/interfaces/_scheduling_.schedulinginstance.html"><code>SchedulingInstance</code></a> (JSON)</label>
+      <textarea id="instance" class="form-control text-monospace" cols="80" rows="11">{
+  "machineSpeeds": [40, 8, 15],
+  "jobs": [
+    {"timeOnUnitMachine": 1600, "waitTime": 40, "isSplittable": true,
+      "dependencies": [1, 3], "earliestStart": 60, "preAssignment": 2},
+    {"timeOnUnitMachine": 320, "preAssignment": 1},
+    {"timeOnUnitMachine": 640, "dependencies": [0]},
+    {"timeOnUnitMachine": 3200, "isSplittable": true}
+  ],
+  "minFragment": 320
+}</textarea>
+    </div>
+    <button id="btnRefresh" type="button" class="mb-3">Compute Schedule</button>
+    <button id="btnShare" type="button" class="mb-3">Share</button>
+    <div id="feedback" class="alert alert-success alert-dismissible fade" role="alert">
+      <strong>Holy guacamole!</strong>
+      <span>You should check in on some of those fields below.</span>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div id="drawing"></div>
+    <div class="form-group">
+      <label for="schedule">Output: <a href="https://fschopp.github.io/project-planning-js/doc/globals.html#schedule"><code>Schedule</code></a> | <a href="https://fschopp.github.io/project-planning-js/doc/globals.html#schedulingfailure"><code>SchedulingFailure</code></a> (JSON)</label>
+      <textarea id="schedule" class="form-control text-monospace" cols="80" rows="10"></textarea>
+    </div>
+  </form>
+</main>
+<hr class="mt-5">
+<footer class="footer">
+  <div class="container">
+    <a href="https://github.com/fschopp/project-planning-js">Back to project page.</a>
+  </div>
+</footer>
+
+<script src="demo.ts"></script>

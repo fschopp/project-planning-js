@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+
+    // Enable all strict type-checking options.
+    "strict": true,
+
+    "declaration": true,
+    "outDir": "target/js",
+    "moduleResolution": "node",
+
+    // Allow to import CommonJS modules using the regular syntax (as opposed to "import = require('module')")
+    "esModuleInterop": true
+  },
+  "files": [
+    "src/main/minheap.ts",
+    "src/main/scheduling.ts"
+  ],
+  "typedocOptions": {
+    "excludePrivate": true,
+    "excludeNotExported": true,
+    "mode": "modules",
+    "entryPoint": "\"scheduling\"",
+    "out": "target/doc"
+  }
+}

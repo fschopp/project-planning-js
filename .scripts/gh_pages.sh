@@ -1,0 +1,51 @@
+#!/bin/bash
+
+# -----------------------------------------------------------------------------
+# Replaces the 'gh-pages' branch
+#
+# Usage:
+# .scripts/gh_pages.sh
+# -----------------------------------------------------------------------------
+
+set -e # Fail on error
+set -u # Fail on uninitialized
+
+if [ ! -f package.json ]; then
+    echo "Must run from root directory (containing file 'pom.xml')"
+    exit 1
+fi
+
+revision=$(git rev-parse --short=7 HEAD)
+if ! git diff-index --quiet HEAD -- ; then
+    revision="${revision} (uncommitted changes)"
+fi
+
+echo "Will commit to branch 'gh-pages'..."
+
+localrepo=$(pwd)
+email=$(git config user.email)
+name=$(git config user.name)
+
+# Clone existing gh-pages branch to target/gh-pages
+mkdir -p target/gh-pages
+cd target/gh-pages
+git init
+git checkout -b gh-pages
+git config --local user.email "${email}"
+git config --local user.name "${name}"
+
+# Tell GitHub not to run the page through Jekyll
+touch .nojekyll
+
+# Copy contents of the target directory that we want to publish on gh-pages
+cp -Rf "${localrepo}/target/demo" .
+cp -Rf "${localrepo}/target/doc" .
+mkdir coverage
+cp -Rf "${localrepo}/target/coverage/lcov-report/" coverage/
+
+# Add site and commit
+git add --force --all
+git commit -m "Site for revision ${revision}"
+git push "${localrepo}" +gh-pages
+
+echo "Successfully replaced branch 'gh-pages'."
