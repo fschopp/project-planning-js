@@ -2,6 +2,8 @@ Algorithm for project planning. More specifically, a greedy algorithm for schedu
 
 ## Status
 
+[![Build Status](https://travis-ci.org/fschopp/project-planning-js.svg?branch=master)](https://travis-ci.org/fschopp/project-planning-js)
+[![npm](https://img.shields.io/npm/v/@fschopp/project-planning-js.svg)](https://www.npmjs.com/package/@fschopp/project-planning-js)
 
 ## Overview
 
