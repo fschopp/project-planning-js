@@ -1,6 +1,6 @@
 {
   "name": "@fschopp/project-planning-js",
-  "version": "1.0.0-SNAPSHOT",
+  "version": "1.0.0",
   "description": "Algorithm for project planning. More precisely, *list scheduling* with support for machines running at different speeds, optional preemption, optional splitting of jobs across machines, release dates, and delivery times.",
   "keywords": [
     "project",
