@@ -101,7 +101,12 @@ function computeVisualization(instance: SchedulingInstance, result: Schedule): V
 }
 
 function createSvg(draw: SVG.Doc, visualization: Visualization) {
+  // The first rule sets the font-family only if the SVG is used stand-alone. Otherwise, we want to inherit.
   draw.clear().width('100%').element('style').attr('type', 'text/css').words(`/* <![CDATA[ */
+svg:root {
+  font-family: sans-serif;
+}
+
 .row-in-schedule:nth-child(odd) > rect {
   fill: none;
 }

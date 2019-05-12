@@ -13,14 +13,21 @@
     "esModuleInterop": true
   },
   "files": [
-    "src/main/minheap.ts",
+    // From https://www.typescriptlang.org/docs/handbook/tsconfig-json.html:
+    // "Any files that are referenced by files included via the "files" or "include" properties are also included."
+    // It is thereefore sufficient to list the main file here.
+
+    // For TypeDoc, any file explicitly listed here is "internal", all other files are "external". That terminology is
+    // is somewhat confusing -- "internal" in the TypeDoc terminology refers to our own classes, "external" to
+    // third-party code. However, by listing only our main file here and with option "excludeExternals", we can
+    // conveniently exclude documenting those pieces that are not meant to be exported.
     "src/main/scheduling.ts"
   ],
   "typedocOptions": {
     "excludePrivate": true,
+    "excludeExternals": true,
     "excludeNotExported": true,
-    "mode": "modules",
-    "entryPoint": "\"scheduling\"",
+    "mode": "file",
     "out": "target/doc"
   }
 }

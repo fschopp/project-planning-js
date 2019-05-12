@@ -7,7 +7,7 @@ export default [
     output: {
       file: 'dist/scheduling.js',
       format: 'umd',
-      name: 'Scheduling'
+      name: 'ProjectPlanningJs'
     },
     plugins: [
       strip({
@@ -20,7 +20,7 @@ export default [
     output: {
       file: 'dist/scheduling.min.js',
       format: 'umd',
-      name: 'Scheduling'
+      name: 'ProjectPlanningJs'
     },
     plugins: [
       strip({

@@ -1,23 +1,8 @@
 /**
- * Greedy algorithm for scheduling jobs on related machines, with optional preemption and splitting of jobs across
- * machines.
+ * Algorithm for project planning. More precisely, *list scheduling* with support for machines running at different
+ * speeds, optional preemption, optional splitting of jobs across machines, release dates, and delivery times.
  *
- * This module implements a simple greedy algorithm for scheduling jobs on uniform parallel machines (also called
- * “related machines”) where each machine has a speed so that the processing time of a job <em>i</em> on machine
- * <em>j</em> is inversely proportional to machine <em>j</em>’s speed.
- *
- * The problem solved by this module is similar to Q￨prec,pmtn￨*C*<sub>max</sub> (see the three-field notation for
- * theoretical scheduling problems introduced by Graham et al. 1979, “Optimization and Approximation in Deterministic
- * Sequencing and Scheduling: a Survey,”
- * doi:[10.1016/S0167-5060(08)70356-X](https://dx.doi.org/10.1016/S0167-5060(08)70356-X)).
- *
- * However, there are practically motivated additions in the problem statement:
- * - Each job has a flag that determines whether it may be processed by more than one machine at a time, as long as the
- *   unit processing time (meaning the processing time if executed on a machine with unit speed) of each job fragment is
- *   not less than a given threshold.
- * - As part of the input, each job may already be fixed to a particular machine.
- * - Each job may have a machine-independent wait time.
- * - Each job may have an earliest start time.
+ * See README file for details.
  */
 
 /** API documentation barrier */
@@ -70,14 +55,13 @@ export const enum JobSplitting {
  */
 export interface Job {
   /**
-   * The processing time of a job if it were scheduled on a machine with unit speed.
+   * The processing requirement of a job (or, more succinctly, the job size).
    *
-   * The actual processing time of a job (or job fragment) on a machine with speed `speed` is
-   * `timeOnUnitMachine / speed`. This is the amount of time the machine is busy. In addition, a job may also require
-   * the machine to wait. During the wait time specified by {@link waitTime}, the machine is not busy and can process
-   * other jobs.
+   * The actual *processing time* of a job (or job fragment) on a machine with speed `speed` is `size / speed`. This is
+   * the amount of time the machine is busy. In addition, a job may also have a delivery time. During that time, the
+   * machine is already available again and can process other jobs.
    */
-  timeOnUnitMachine: number;
+  size: number;
 
   /**
    * Wait time of a job, independent of the machine that it is scheduled on.
@@ -93,7 +77,7 @@ export interface Job {
    *
    * The default wait time is 0.
    */
-  waitTime?: number;
+  deliveryTime?: number;
 
   /**
    * Whether the job allows preemption or may be processed concurrently by more than one machine at a time.
@@ -106,7 +90,7 @@ export interface Job {
    * Indices of the jobs that this job depends on.
    *
    * Dependencies are finish-to-start; that is, a job cannot start before all job dependencies are fully completed
-   * (including any wait time they may have).
+   * (including any delivery time they may have).
    *
    * The default is no dependencies; that is, the empty array.
    */
@@ -119,13 +103,13 @@ export interface Job {
    *
    * The default is none; that is, an earliest possible start time of 0.
    */
-  earliestStart?: number;
+  releaseTime?: number;
 
   /**
    * Index of the machine that this job must be assigned to.
    *
    * If both this is set and {@link splitting} is {@link JobSplitting.MULTIPLE_MACHINES}, then this field only
-   * determines what machine the wait time (if any) will be scheduled on.
+   * determines what machine the delivery time (if any) will be assigned to.
    *
    * The default is no pre-assignment.
    */
@@ -133,10 +117,10 @@ export interface Job {
 }
 
 const JOB_DEFAULTS = Object.freeze<OnlyOptionals<Job>>({
-  waitTime: 0,
+  deliveryTime: 0,
   splitting: JobSplitting.PREEMPTION,
   dependencies: [],
-  earliestStart: 0,
+  releaseTime: 0,
   preAssignment: -1,
 });
 
@@ -159,11 +143,11 @@ export interface SchedulingInstance {
   jobs: Job[];
 
   /**
-   * The minimum processing time (on a machine with unit speed) that a job fragment must have.
+   * The minimum processing requirement that a job fragment must have.
    *
    * The default is 0 (that is, there is no effective minimum).
    */
-  minFragment?: number;
+  minFragmentSize?: number;
 }
 
 /**
@@ -186,10 +170,11 @@ export interface JobFragment {
   end: number;
 
   /**
-   * Whether this job fragment represents wait time.
+   * Whether this job fragment represents delivery time.
    *
    * If true, this job fragment does not prevent other jobs to be scheduled concurrently on the same machine. However,
-   * any dependent job can only execute once all processing of this job has been finished and all wait time has elapsed.
+   * any dependent job can only execute once all processing of this job has been finished and the delivery time has
+   * elapsed.
    */
   isWaiting: boolean;
 }
@@ -251,20 +236,20 @@ export function computeSchedule(instance: SchedulingInstance): Schedule | Schedu
   } else if (
       !nonNegativeIntegers(instance.machineSpeeds) ||
       instance.jobs.filter((job) =>
-          !nonNegativeInteger(job.timeOnUnitMachine) ||
-          !undefinedOrNonNegativeIntegers(job.waitTime, job.earliestStart) ||
+          !nonNegativeInteger(job.size) ||
+          !undefinedOrNonNegativeIntegers(job.deliveryTime, job.releaseTime) ||
           !undefinedOrIntegerWithinZeroTo(numMachines, job.preAssignment) ||
           (job.dependencies !== undefined && !integersWithinZeroTo(numJobs, job.dependencies))
       ).length > 0 ||
-      !undefinedOrNonNegativeInteger(instance.minFragment)
+      !undefinedOrNonNegativeInteger(instance.minFragmentSize)
   ) {
     return 'All job processing times and machine speeds need to be non-negative integers. ' +
         'All job dependency and pre-assignment indices need to be within bounds.';
   }
 
   const jobs: Required<Job>[] = instance.jobs.map((job) => Object.assign({}, JOB_DEFAULTS, job));
-  const minFragmentSize: number = instance.minFragment === undefined ? 0 : instance.minFragment;
-  return new Scheduling(numMachines, instance.machineSpeeds, jobs, minFragmentSize).schedule;
+  const minFragmentSize: number = instance.minFragmentSize === undefined ? 0 : instance.minFragmentSize;
+  return new ListScheduling(numMachines, instance.machineSpeeds, jobs, minFragmentSize).schedule;
 }
 
 /**
@@ -284,7 +269,7 @@ interface GapsList {
 }
 
 /**
- * A machine and associated data required by {@link Scheduling.scheduleJob}().
+ * A machine and associated data required by {@link ListScheduling.scheduleJob}().
  */
 interface Machine {
   /**
@@ -313,7 +298,7 @@ interface Machine {
   /**
    * Linked list of gaps.
    *
-   * Whenever starting to schedule a job, this is initialized with a tail list of {@link Scheduling.gapsLists_}.
+   * Whenever starting to schedule a job, this is initialized with a tail list of {@link ListScheduling.gapsLists_}.
    */
   gapsList: GapsList;
 
@@ -348,7 +333,7 @@ interface AvailableMachineIndices {
  * Internal class whose sole purpose is to store algorithm state, so it does not have to be inconveniently passed around
  * between functions.
  */
-class Scheduling {
+class ListScheduling {
   public readonly schedule: Schedule | SchedulingFailure;
 
   private readonly numMachines_: number;
@@ -496,15 +481,15 @@ class Scheduling {
     this.adjustGaps(machineState, end, scheduledJob !== undefined);
   }
 
-  private scheduleJob(availableMachineIndices: AvailableMachineIndices, timeOnUnitMachine: number,
-      isPreemptible: boolean, earliestStart: number, scheduledJob?: ScheduledJob): number {
-    assert(availableMachineIndices.length > 0 && Number.isInteger(timeOnUnitMachine) && timeOnUnitMachine > 0 &&
+  private scheduleJob(availableMachineIndices: AvailableMachineIndices, size: number, isPreemptible: boolean,
+      earliestStart: number, scheduledJob?: ScheduledJob): number {
+    assert(availableMachineIndices.length > 0 && Number.isInteger(size) && size > 0 &&
         Number.isInteger(earliestStart), 'Invalid arguments');
 
-    const minFragmentSize = isPreemptible ? Math.min(timeOnUnitMachine, this.minFragmentSize_) : timeOnUnitMachine;
+    const minFragmentSize = isPreemptible ? Math.min(size, this.minFragmentSize_) : size;
     let currentSpeed = 0;
     let lastTimestamp = 0;
-    let remainingUnitTime = timeOnUnitMachine;
+    let remainingSize = size;
     const machines: Machine[] = availableMachineIndices.map((index, availableIdx): Machine => {
       const gapsList = this.gapsLists_[index];
       assert(gapsList.tail !== null, 'Invariant: at least 2 elements in linked list gapsList');
@@ -518,34 +503,34 @@ class Scheduling {
       };
     });
 
-    while (remainingUnitTime > 0) {
+    while (remainingSize > 0) {
       let eventTime: number = Number.MAX_SAFE_INTEGER;
       let machine: Machine = machines[0];
       availableMachineIndices.forEach((index, availableIdx) => {
         const minWallClockTime = Math.ceil(minFragmentSize / machines[availableIdx].speed);
-        const machineEventTime = Scheduling.nextTimeStamp(minWallClockTime, earliestStart, machines[availableIdx]);
+        const machineEventTime = ListScheduling.nextTimeStamp(minWallClockTime, earliestStart, machines[availableIdx]);
         if (machineEventTime < eventTime) {
           eventTime = machineEventTime;
           machine = machines[availableIdx];
         }
       });
       let isProjectedEndTime: boolean = false;
-      const currentProjectedEndTime: number = Math.ceil(lastTimestamp + remainingUnitTime / currentSpeed);
+      const currentProjectedEndTime: number = Math.ceil(lastTimestamp + remainingSize / currentSpeed);
       if (currentProjectedEndTime < eventTime) {
         eventTime = currentProjectedEndTime;
         isProjectedEndTime = true;
       }
       assert(Number.isInteger(eventTime) && Number.isInteger(lastTimestamp) && Number.isInteger(currentSpeed),
           'Invariant: timestamps and speeds are integers');
-      remainingUnitTime -= (eventTime - lastTimestamp) * currentSpeed;
-      assert(!isProjectedEndTime || remainingUnitTime <= 0,
-          'Invariant: isProjectedEndTime implies remainingUnitTime <= 0');
+      remainingSize -= (eventTime - lastTimestamp) * currentSpeed;
+      assert(!isProjectedEndTime || remainingSize <= 0,
+          'Invariant: isProjectedEndTime implies remainingSize <= 0');
 
       if (!isProjectedEndTime) {
         if (machine.currentFragmentStart === null) {
           const nextGap: Gap = machine.gapsList.head;
           machine.currentFragmentStart = Math.max(earliestStart, nextGap.startTime);
-          remainingUnitTime -= (eventTime - machine.currentFragmentStart) * machine.speed;
+          remainingSize -= (eventTime - machine.currentFragmentStart) * machine.speed;
           currentSpeed += machine.speed;
         } else {
           this.createJobFragment(machine, eventTime, scheduledJob);
@@ -555,7 +540,7 @@ class Scheduling {
       }
 
       lastTimestamp = eventTime;
-      assert(Number.isInteger(lastTimestamp) && Number.isInteger(remainingUnitTime),
+      assert(Number.isInteger(lastTimestamp) && Number.isInteger(remainingSize),
           'Invariant: timestamps and durations are integers');
     }
 
@@ -568,17 +553,17 @@ class Scheduling {
     return lastTimestamp;
   }
 
-  private static scheduleWaitTime(waitingMachineIdx: number, waitTime: number, scheduledJob: ScheduledJob) {
-    assert(Number.isInteger(waitTime), 'Invalid arguments');
-    if (waitTime > 0) {
+  private static scheduleDeliveryTime(machineIdx: number, deliveryTime: number, scheduledJob: ScheduledJob) {
+    assert(Number.isInteger(deliveryTime), 'Invalid arguments');
+    if (deliveryTime > 0) {
       const start = scheduledJob[scheduledJob.length - 1].end;
-      const waitJobFragment: JobFragment = {
-        machine: waitingMachineIdx,
+      const deliveryJobFragment: JobFragment = {
+        machine: machineIdx,
         start,
-        end: start + waitTime,
+        end: start + deliveryTime,
         isWaiting: true,
       };
-      scheduledJob.push(waitJobFragment);
+      scheduledJob.push(deliveryJobFragment);
     }
   }
 
@@ -644,33 +629,33 @@ class Scheduling {
         assert(dependency.length > 0, 'Dependencies are scheduled before their dependents');
         const lastJobFragment: JobFragment = dependency[dependency.length - 1];
         return Math.max(previousEarliestStartTime, lastJobFragment.end);
-      }, job.earliestStart);
+      }, job.releaseTime);
       let availableMachines: AvailableMachineIndices = allMachines;
-      let waitingMachineIdx: number | undefined;
+      let deliveryMachineIdx: number | undefined;
       if (job.splitting === JobSplitting.MULTIPLE_MACHINES) {
-        waitingMachineIdx = job.preAssignment >= 0
+        deliveryMachineIdx = job.preAssignment >= 0
             ? job.preAssignment
             : 0;
       } else if (job.preAssignment >= 0) {
-        availableMachines = Scheduling.singleMachine(job.preAssignment);
-        waitingMachineIdx = job.preAssignment;
+        availableMachines = ListScheduling.singleMachine(job.preAssignment);
+        deliveryMachineIdx = job.preAssignment;
       } else {
         let maxCompletionTime: number = Number.MAX_SAFE_INTEGER;
         for (let i = 0; i < this.numMachines_; ++i) {
-          const currentAvailableMachines = Scheduling.singleMachine(i);
+          const currentAvailableMachines = ListScheduling.singleMachine(i);
           const completionTime =
-              this.scheduleJob(currentAvailableMachines, job.timeOnUnitMachine, isPreemptible, earliestStartTime);
+              this.scheduleJob(currentAvailableMachines, job.size, isPreemptible, earliestStartTime);
           if (completionTime < maxCompletionTime) {
             availableMachines = currentAvailableMachines;
-            waitingMachineIdx = i;
+            deliveryMachineIdx = i;
             maxCompletionTime = completionTime;
           }
         }
       }
-      assert(waitingMachineIdx !== undefined);
+      assert(deliveryMachineIdx !== undefined);
       this.scheduleJob(
-          availableMachines, job.timeOnUnitMachine, isPreemptible, earliestStartTime, newSchedule[jobGraphNode.idx]);
-      Scheduling.scheduleWaitTime(waitingMachineIdx!, job.waitTime, newSchedule[jobGraphNode.idx]);
+          availableMachines, job.size, isPreemptible, earliestStartTime, newSchedule[jobGraphNode.idx]);
+      ListScheduling.scheduleDeliveryTime(deliveryMachineIdx!, job.deliveryTime, newSchedule[jobGraphNode.idx]);
       ++numScheduledJobs;
       for (const dependent of jobGraphNode.dependents) {
         --dependent.numDependencies;

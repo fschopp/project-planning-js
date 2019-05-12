@@ -1,7 +1,7 @@
 {
   "name": "@fschopp/project-planning-js",
-  "version": "0.9.0",
-  "description": "Algorithm for project planning. More specifically, a greedy algorithm for scheduling jobs on related machines, with optional preemption and splitting of jobs across machines.",
+  "version": "1.0.0-SNAPSHOT",
+  "description": "Algorithm for project planning. More precisely, *list scheduling* with support for machines running at different speeds, optional preemption, optional splitting of jobs across machines, release dates, and delivery times.",
   "keywords": [
     "project",
     "planning",
@@ -30,14 +30,14 @@
   ],
   "scripts": {
     "clean": "rm -rf dist/ target/",
-    "compile": "tsc && rollup -c && cp target/js/*.d.ts dist/es6/",
-    "doc": "typedoc",
     "lint": "tslint --format verbose --project .",
     "test": "jest",
     "test:coverage": "npm run test -- --collect-coverage",
-    "package": "npm run clean && npm run lint && npm run test:coverage && npm run compile && npm run doc && npm run demo:build && .scripts/gh_pages.sh",
+    "compile": "tsc && rollup -c && cp target/js/*.d.ts dist/es6/",
+    "doc": "typedoc",
     "demo": "parcel serve --cache-dir target/parcel-cache --out-dir target/demo --public-url /project-planning-js/demo/ src/demo/index.html",
-    "demo:build": "parcel build --cache-dir target/parcel-cache --out-dir target/demo --public-url /project-planning-js/demo/ src/demo/index.html"
+    "demo:build": "parcel build --cache-dir target/parcel-cache --out-dir target/demo --public-url /project-planning-js/demo/ src/demo/index.html",
+    "package": "npm run clean && npm run lint && npm run test:coverage && npm run compile && npm run doc && npm run demo:build && .scripts/gh_pages.sh"
   },
   "engines": {
     "node": ">=10.0.0"
@@ -45,6 +45,7 @@
   "devDependencies": {
     "@types/jest": "^24.0.12",
     "@types/node": "^12.0.0",
+    "coveralls": "^3.0.3",
     "jest": "^24.7.1",
     "node-interval-tree": "^1.3.3",
     "parcel-bundler": "^1.12.3",

@@ -1,9 +1,10 @@
 /dist/
 /target/
 
-# IntelliJ
+# IntelliJ, Visual Studio Code, ...
 /.idea/
 /*.iml
+/.vscode/
 
 # node.js
 /node_modules/

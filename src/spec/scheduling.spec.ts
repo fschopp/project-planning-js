@@ -32,7 +32,7 @@ describe('schedule() handles edge cases and invalid input', () => {
   test('returns error on empty machine list', () => {
     const noMachinesInstance: SchedulingInstance = {
       machineSpeeds: [],
-      jobs: [{timeOnUnitMachine: 1}],
+      jobs: [{size: 1}],
     };
     const schedule = computeSchedule(noMachinesInstance);
     expect(isSchedulingFailure(schedule)).toBeTruthy();
@@ -43,8 +43,8 @@ describe('schedule() handles edge cases and invalid input', () => {
     const cyclicDependenciesInstance: SchedulingInstance = {
       machineSpeeds: [1],
       jobs: [
-        {timeOnUnitMachine: 1, dependencies: [1]},
-        {timeOnUnitMachine: 1, dependencies: [0]},
+        {size: 1, dependencies: [1]},
+        {size: 1, dependencies: [0]},
       ],
     };
     const schedule = computeSchedule(cyclicDependenciesInstance);
@@ -78,8 +78,8 @@ describe('schedule() handles optional job properties', () => {
     const simpleInstance: SchedulingInstance = {
       machineSpeeds: [2],
       jobs: [
-        {timeOnUnitMachine: 2, waitTime: 2},
-        {timeOnUnitMachine: 4, waitTime: 1},
+        {size: 2, deliveryTime: 2},
+        {size: 4, deliveryTime: 1},
       ],
     };
     const result: Schedule = [
@@ -93,10 +93,10 @@ describe('schedule() handles optional job properties', () => {
     const simpleInstance: SchedulingInstance = {
       machineSpeeds: [10, 1],
       jobs: [
-        {timeOnUnitMachine: 10, earliestStart: 1},
-        {timeOnUnitMachine: 23, splitting: JobSplitting.MULTIPLE_MACHINES},
-        {timeOnUnitMachine: 10, earliestStart: 5},
-        {timeOnUnitMachine: 30, splitting: JobSplitting.NONE},
+        {size: 10, releaseTime: 1},
+        {size: 23, splitting: JobSplitting.MULTIPLE_MACHINES},
+        {size: 10, releaseTime: 5},
+        {size: 30, splitting: JobSplitting.NONE},
       ],
     };
     const result: SimplifiedSchedule = [
@@ -112,9 +112,9 @@ describe('schedule() handles optional job properties', () => {
     const simpleInstance: SchedulingInstance = {
       machineSpeeds: [2],
       jobs: [
-        {timeOnUnitMachine: 4, waitTime: 1, dependencies: [1]},
-        {timeOnUnitMachine: 6},
-        {timeOnUnitMachine: 2, dependencies: [0, 1]},
+        {size: 4, deliveryTime: 1, dependencies: [1]},
+        {size: 6},
+        {size: 2, dependencies: [0, 1]},
       ],
     };
     const result: SimplifiedSchedule = [
@@ -125,13 +125,13 @@ describe('schedule() handles optional job properties', () => {
     expect(computeSchedule(simpleInstance)).toEqual(completeSchedule(result));
   });
 
-  test('earliestStart', () => {
+  test('releaseTime', () => {
     const simpleInstance: SchedulingInstance = {
       machineSpeeds: [1],
       jobs: [
-        {timeOnUnitMachine: 2, earliestStart: 4},
-        {timeOnUnitMachine: 3, earliestStart: 2, dependencies: [2]},
-        {timeOnUnitMachine: 4, earliestStart: 1},
+        {size: 2, releaseTime: 4},
+        {size: 3, releaseTime: 2, dependencies: [2]},
+        {size: 4, releaseTime: 1},
       ],
     };
     const result: SimplifiedSchedule = [
@@ -146,9 +146,9 @@ describe('schedule() handles optional job properties', () => {
     const simpleInstance: SchedulingInstance = {
       machineSpeeds: [1, 10],
       jobs: [
-        {timeOnUnitMachine: 10, preAssignment: 0},
-        {timeOnUnitMachine: 1, preAssignment: 0},
-        {timeOnUnitMachine: 10},
+        {size: 10, preAssignment: 0},
+        {size: 1, preAssignment: 0},
+        {size: 10},
       ],
     };
     const result: SimplifiedSchedule = [
@@ -181,16 +181,16 @@ test.each([
   minWorkTestCase(5, [{machine: 0, start: 1, end: 6}]),
 ] as [number, SimplifiedSchedule][])(
     'schedule() handles minimum fragment size %d',
-    (minFragment, result) => {
+    (minFragmentSize, result) => {
       const simpleInstance: SchedulingInstance = {
         machineSpeeds: [1, 1, 1],
         jobs: [
-          {timeOnUnitMachine: 1, dependencies: [], preAssignment: 0},
-          {timeOnUnitMachine: 1, dependencies: [0], preAssignment: 1},
-          {timeOnUnitMachine: 1, dependencies: [0, 1], preAssignment: 2},
-          {timeOnUnitMachine: 5, splitting: JobSplitting.MULTIPLE_MACHINES, preAssignment: 2},
+          {size: 1, dependencies: [], preAssignment: 0},
+          {size: 1, dependencies: [0], preAssignment: 1},
+          {size: 1, dependencies: [0, 1], preAssignment: 2},
+          {size: 5, splitting: JobSplitting.MULTIPLE_MACHINES, preAssignment: 2},
         ],
-        minFragment,
+        minFragmentSize,
       };
       expect(computeSchedule(simpleInstance)).toEqual(completeSchedule(result));
     }

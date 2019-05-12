@@ -1,0 +1,27 @@
+<svg id="SvgjsSvg1001" width="768" height="119" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs"><style id="SvgjsStyle1170" type="text/css">/* &lt;![CDATA[ */
+svg:root {
+  font-family: sans-serif;
+}
+
+.row-in-schedule:nth-child(odd) &gt; rect {
+  fill: none;
+}
+
+.row-in-schedule:nth-child(even) &gt; rect {
+  fill: #e3e3e3
+}
+
+.schedule-baseline {
+  stroke: black;
+  stroke-width: 2px;
+}
+
+.schedule-finish-line {
+  stroke: #DDD;
+  stroke-width: 1px;
+}
+
+#drawing {
+  overflow-x: auto;
+}
+/* ]]&gt; */</style><g id="SvgjsG1174" transform="matrix(1,0,0,1,95.96875,10.5)"><g id="SvgjsG1175"><g id="SvgjsG1176" class="row-in-schedule"><rect id="SvgjsRect1177" width="768" height="30" x="-95.46875" y="-5"></rect><text id="SvgjsText1171" text-anchor="end" anchor="end" x="-10" y="15.46875">Machine 0</text></g><g id="SvgjsG1184" class="row-in-schedule"><rect id="SvgjsRect1185" width="768" height="30" x="-95.46875" y="25"></rect><text id="SvgjsText1172" text-anchor="end" anchor="end" x="-10" y="45.46875">Machine 1</text></g><g id="SvgjsG1195" class="row-in-schedule"><rect id="SvgjsRect1196" width="768" height="30" x="-95.46875" y="55"></rect><text id="SvgjsText1173" text-anchor="end" anchor="end" x="-10" y="75.46875">Machine 2</text></g></g><line id="SvgjsLine1207" x1="662.53125" y1="-10" x2="662.53125" y2="90" class="schedule-finish-line"></line><g id="SvgjsG1178" opacity="1"><rect id="SvgjsRect1179" width="283.25611413043475" height="20" fill="none" stroke="black" x="0" y="0"></rect><text id="SvgjsText1180" text-anchor="middle" anchor="middle" x="141.62805706521738" y="15.46875">Job 3</text></g><g id="SvgjsG1181" opacity="1"><rect id="SvgjsRect1182" width="283.25611413043475" height="20" fill="none" stroke="black" x="379.2751358695652" y="0"></rect><text id="SvgjsText1183" text-anchor="middle" anchor="middle" x="520.9031929347826" y="15.46875">Job 2</text></g><g id="SvgjsG1186" opacity="1"><rect id="SvgjsRect1187" width="192.03804347826087" height="20" fill="none" stroke="black" x="0" y="30"></rect><text id="SvgjsText1188" text-anchor="middle" anchor="middle" x="96.01902173913044" y="45.46875">Job 1</text></g><g id="SvgjsG1189" opacity="1"><rect id="SvgjsRect1190" width="144.02853260869566" height="20" fill="none" stroke="black" x="192.03804347826087" y="30"></rect><text id="SvgjsText1191" text-anchor="middle" anchor="middle" x="264.0523097826087" y="45.46875">Job 0</text></g><g id="SvgjsG1192" opacity="1"><rect id="SvgjsRect1193" width="192.03804347826087" height="20" fill="none" stroke="black" x="336.0665760869565" y="30"></rect><text id="SvgjsText1194" text-anchor="middle" anchor="middle" x="432.08559782608694" y="45.46875">Job 1</text></g><g id="SvgjsG1197" opacity="1"><rect id="SvgjsRect1198" width="283.25611413043475" height="20" fill="none" stroke="black" x="0" y="60"></rect><text id="SvgjsText1199" text-anchor="middle" anchor="middle" x="141.62805706521738" y="75.46875">Job 3</text></g><g id="SvgjsG1200" opacity="0.5"><rect id="SvgjsRect1201" width="96.01902173913044" height="20" fill="none" stroke="black" x="283.25611413043475" y="60"></rect><text id="SvgjsText1202" text-anchor="middle" anchor="middle" x="331.265625" y="75.46875">Job 3</text></g><g id="SvgjsG1203" opacity="1"><rect id="SvgjsRect1204" width="283.25611413043475" height="20" fill="none" stroke="black" x="379.2751358695652" y="60"></rect><text id="SvgjsText1205" text-anchor="middle" anchor="middle" x="520.9031929347826" y="75.46875">Job 2</text></g><line id="SvgjsLine1206" x1="0" y1="-10" x2="0" y2="90" class="schedule-baseline"></line><text id="SvgjsText1208" text-anchor="end" anchor="end" alignment-baseline="hanging" x="662.53125" y="93.09375">138</text></g></svg>
