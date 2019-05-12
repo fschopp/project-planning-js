@@ -64,18 +64,16 @@ export interface Job {
   size: number;
 
   /**
-   * Wait time of a job, independent of the machine that it is scheduled on.
+   * Delivery time of a job, independent of the machine that it is scheduled on.
    *
-   * Wait time for the (primary) machine processing this job. During the wait time, the machine is not busy and can
-   * process other jobs. However, no dependents of this job can be scheduled until the job has been fully processed and
-   * all wait time has elapsed.
+   * During the delivery time of a job, a machine is available again to process other jobs. However, no dependents of
+   * this job can start before the delivery time has elapsed.
    *
-   * The wait time of a job is always (pessimistically) scheduled after all active processing has been done.
-   *
-   * If {@link splitting} is {@link JobSplitting.MULTIPLE_MACHINES}, then the wait time will be scheduled on the machine
+   * In the computed {@link Schedule}, a separate {@link JobFragment} will be created to represent the delivery time. If
+   * {@link splitting} is {@link JobSplitting.MULTIPLE_MACHINES}, then this job fragment will be assigned to the machine
    * specified by {@link preAssignment} (or simply the first machine if that field is `undefined`).
    *
-   * The default wait time is 0.
+   * The default is no delivery time; that is, 0.
    */
   deliveryTime?: number;
 
