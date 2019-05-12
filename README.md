@@ -56,10 +56,10 @@ const schedule: Schedule | SchedulingFailure = computeSchedule(instance);
 
 ### Browser
 
-Include the minified sources from the jsDelivr CDN:
+Include the minified sources from the [jsDelivr CDN](https://www.jsdelivr.com/package/npm/@fschopp/project-planning-js):
 ```
-<script src="https://cdn.jsdelivr.net/npm/@fschopp/project-planning-js@0.9.0/dist/scheduling.min.js"
-  integrity="sha256-qJWfw4cJMpVCjTAuBA7yo6Ll+SWs8hZvJoVY4KpuLuw=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fschopp/project-planning-js@1.0.0/dist/scheduling.min.js"
+  integrity="sha256-t4PhJGF3IQroFlvhUOIs9ZdN+VtvyPEnHkJ8SaEX950=" crossorigin="anonymous"></script>
 ```
 
 Then, in a subsequent script:
