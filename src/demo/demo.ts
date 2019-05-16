@@ -7,7 +7,7 @@ import {
   Schedule,
   SchedulingFailure,
   SchedulingInstance,
-} from '../main/scheduling';
+} from '../main';
 
 
 // Constants

@@ -57,12 +57,11 @@ const schedule: Schedule | SchedulingFailure = computeSchedule(instance);
 ### Browser
 
 Include the minified sources from the [jsDelivr CDN](https://www.jsdelivr.com/package/npm/@fschopp/project-planning-js):
+```html
+<script src="https://cdn.jsdelivr.net/npm/@fschopp/project-planning-js@.../dist/index.min.js"
+  integrity="..." crossorigin="anonymous"></script>
 ```
-<script src="https://cdn.jsdelivr.net/npm/@fschopp/project-planning-js@1.0.0/dist/scheduling.min.js"
-  integrity="sha256-t4PhJGF3IQroFlvhUOIs9ZdN+VtvyPEnHkJ8SaEX950=" crossorigin="anonymous"></script>
-```
-
-Then, in a subsequent script:
+Of course, the two occurrences of `...` need to be replaced by the current version and its corresponding [subresource integrity (SRI)](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity) hash. Then, in a subsequent script:
 ```javascript
 let instance = { /* as above */ };
 let schedule = ProjectPlanningJs.computeSchedule(instance);
@@ -104,13 +103,13 @@ A typical optimization goal is <i>γ</i> = <i>C</i><sub>max</sub>; that is, mini
   - Scheduling a single job takes time O(<i>n</i> + <i>m</i>):
     - If the job can be split across machines, fill the gaps following the release time. At any time a machine becomes available or unavailable, update the current total speed. The number of gaps on all machines (or equivalently, the number of update steps) is O(<i>n</i>).
     - If the job cannot be split across multiple machines, find the machine which would allow the earliest completion of the job. In aggregate, for all machines, this again may require iterating over O(<i>n</i>) gaps.
-- The total worst-case runtime is thus O(<i>n</i><sup>2</sup> + <i>n</i> · <i>m</i>). However, assuming that only few gaps will arise in the schedule (for instance, because there are few dependencies, most jobs have no release times, or there are frequently splittable jobs that will fill up the gaps), the run time should be closer to O(<i>n</i> · <i>m</i> · log <i>n</i>).
+- The total worst-case runtime is thus O(<i>n</i><sup>2</sup> + <i>n</i> · <i>m</i>). However, assuming that only few gaps will arise in the schedule (for instance, because there are few dependencies, most jobs have no release times, or there are frequently splittable jobs that will fill up the gaps), the run time should be closer to O(<i>n</i> · (<i>m</i> + log <i>n</i>)).
 - In any case, the runtime should rarely be a problem for any scheduling task that one would reasonably want to solve in a web browser.
 
 ### Approximation Guarantees
 
 - Even the most simple discrete scheduling problems are NP-hard. This includes, for instance, minimizing the makespan on two identical machines (P2││<i>C</i><sub>max</sub> in short).
-- Worse, in particularly when precedence constraints are added, the theoretical understanding of scheduling problems is still limited. For instance, no constant-factor approximation algorithm is known at all for makespan minimization on uniform machines (Q│prec│<i>C</i><sub>max</sub>), and this of course also applies to list scheduling. See [Chekuri and Bender (2001)][Chekuri_and_Bender_2001].
+- Worse, in particular when precedence constraints are added, the theoretical understanding of scheduling problems is still limited. For instance, no constant-factor approximation algorithm is known at all for makespan minimization on uniform machines (Q│prec│<i>C</i><sub>max</sub>), and this of course also applies to list scheduling. See [Chekuri and Bender (2001)][Chekuri_and_Bender_2001].
 - In practice, however, list scheduling is known to perform quite well for natural scheduling problems.
 - On identical machines (all speeds are the same), the list scheduling algorithm performs reasonably well even with precedence constraints. The approximation ratio for makespan minimization in this case (P│prec│<i>C</i><sub>max</sub>) is 2 – (1 / <i>m</i>). See [Graham (1966)][Graham_1966].
 - [Liu and Liu (1974)][Liu_and_Liu_1974] showed that the approximation guarantee for list scheduling on uniform machines becomes much worse: 1 + max <i>s</i><sub><i>i</i></sub> / min <i>s</i><sub><i>i</i></sub> – max <i>s</i><sub><i>i</i></sub> / ∑ <i>s</i><sub><i>i</i></sub>.
@@ -121,7 +120,7 @@ A typical optimization goal is <i>γ</i> = <i>C</i><sub>max</sub>; that is, mini
 - Chekuri and Bender (2001): “[An Efficient Approximation Algorithm for Minimizing Makespan on Uniformly Related Machines][Chekuri_and_Bender_2001].”
 - Graham (1966): “[Bounds for Certain Multiprocessing Anomalies][Graham_1966].”
 - Graham, Lawler, Lenstra, Rinnooy Kan (1979): “[Optimization and Approximation in Deterministic Sequencing and Scheduling: a Survey][Graham_et_al_1979].”
-- Lawler et al. (1993): “[Sequencing and scheduling: Algorithms and complexity][Lawler_et_al_1993]”
+- Lawler, Lenstra, Rinnooy Kan, Shmoys (1993): “[Sequencing and scheduling: Algorithms and complexity][Lawler_et_al_1993]”
 - Liu and Liu (1974): “[Bounds on scheduling algorithms for heterogeneous computing systems][Liu_and_Liu_1974],” Technical Report UIUCDCS-R-74-632, Department of Computer Science, University of Illinois at Urbana-Champaign. 
 
 [Chekuri_and_Bender_2001]: https://dx.doi.org/10.1006/jagm.2001.1184

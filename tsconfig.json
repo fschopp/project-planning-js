@@ -15,12 +15,15 @@
   "files": [
     // From https://www.typescriptlang.org/docs/handbook/tsconfig-json.html:
     // "Any files that are referenced by files included via the "files" or "include" properties are also included."
-    // It is thereefore sufficient to list the main file here.
+    // It is therefore sufficient to list the main file here.
 
     // For TypeDoc, any file explicitly listed here is "internal", all other files are "external". That terminology is
-    // is somewhat confusing -- "internal" in the TypeDoc terminology refers to our own classes, "external" to
-    // third-party code. However, by listing only our main file here and with option "excludeExternals", we can
-    // conveniently exclude documenting those pieces that are not meant to be exported.
+    // somewhat confusing -- "internal" in the TypeDoc terminology refers to our own classes, "external" to third-party
+    // code. However, by listing only those files here that either (a) contain documentation or (b) contain no
+    // documentation but transitively include everything else, we can conveniently exclude documenting those pieces that
+    // are not meant to be exported (with option "excludeExternals").
+    "src/main/api-types.ts",
+    "src/main/index.ts",
     "src/main/scheduling.ts"
   ],
   "typedocOptions": {

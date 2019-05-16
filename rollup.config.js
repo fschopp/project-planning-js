@@ -3,9 +3,9 @@ import { terser } from "rollup-plugin-terser";
 
 export default [
   {
-    input: 'target/js/scheduling.js',
+    input: 'target/js/index.js',
     output: {
-      file: 'dist/scheduling.js',
+      file: 'dist/index.js',
       format: 'umd',
       name: 'ProjectPlanningJs'
     },
@@ -16,9 +16,9 @@ export default [
     ],
   },
   {
-    input: 'target/js/scheduling.js',
+    input: 'target/js/index.js',
     output: {
-      file: 'dist/scheduling.min.js',
+      file: 'dist/index.min.js',
       format: 'umd',
       name: 'ProjectPlanningJs'
     },
@@ -30,7 +30,7 @@ export default [
     ],
   },
   {
-    input: 'target/js/scheduling.js',
+    input: 'target/js/index.js',
     output: {
       dir: 'dist/es6/',
       format: 'esm'

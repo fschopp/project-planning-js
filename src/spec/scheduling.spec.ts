@@ -1,11 +1,11 @@
 import {
-  computeSchedule,
   isSchedulingFailure,
   JobFragment,
   JobSplitting,
   Schedule,
   SchedulingInstance,
-} from '../main/scheduling';
+} from '../main/api-types';
+import { computeSchedule } from '../main/scheduling';
 
 interface SimplifiedJobFragment extends Partial<JobFragment> {
   machine: number;
@@ -70,6 +70,22 @@ describe('schedule() handles edge cases and invalid input', () => {
     const schedule = computeSchedule(noJobsInstance);
     expect(isSchedulingFailure(schedule)).toBeFalsy();
     expect(schedule).toEqual([]);
+  });
+
+  test('processing time 0', () => {
+    const instance: SchedulingInstance = {
+      machineSpeeds: [1],
+      jobs: [
+        {size: 0, deliveryTime: 1, releaseTime: 1},
+        {size: 0},
+      ],
+    };
+    const schedule = computeSchedule(instance);
+    const expected: Schedule = [
+      [{machine: 0, start: 1, end: 2, isWaiting: true}],
+      [],
+    ];
+    expect(schedule).toEqual(expected);
   });
 });
 
