@@ -27,14 +27,15 @@
     "url": "https://github.com/fschopp/project-planning-js/issues"
   },
   "files": [
-    "/dist"
+    "/dist",
+    "/src/main"
   ],
   "scripts": {
     "clean": "rm -rf dist/ target/",
     "lint": "tslint --format verbose --project .",
     "test": "jest",
     "test:coverage": "npm run test -- --collect-coverage",
-    "compile": "tsc && rollup -c && cp target/js/*.d.ts dist/es6/",
+    "compile": "tsc && rollup -c && cp target/js/*.d.ts target/js/*.d.ts.map dist/es6/ && tsc -p src/scripts/ && node target/scripts/clean-sourcemap.js dist/*.map dist/es6/*.map",
     "doc": "typedoc",
     "demo": "parcel serve --cache-dir target/parcel-cache --out-dir target/demo --public-url /project-planning-js/demo/ src/demo/index.html",
     "demo:build": "parcel build --cache-dir target/parcel-cache --out-dir target/demo --public-url /project-planning-js/demo/ src/demo/index.html",
@@ -59,6 +60,7 @@
     "parcel-bundler": "^1.12.3",
     "rollup": "^1.12.0",
     "rollup-plugin-babel": "^4.3.2",
+    "rollup-plugin-sourcemaps": "^0.4.2",
     "rollup-plugin-terser": "^4.0.4",
     "svg.js": "^2.7.1",
     "ts-jest": "^24.0.2",
