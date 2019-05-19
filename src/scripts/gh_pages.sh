@@ -3,15 +3,17 @@
 # -----------------------------------------------------------------------------
 # Replaces the 'gh-pages' branch
 #
+# This script is meant to be run from the project root directory.
+#
 # Usage:
-# .scripts/gh_pages.sh
+# src/scripts/gh_pages.sh
 # -----------------------------------------------------------------------------
 
 set -e # Fail on error
 set -u # Fail on uninitialized
 
 if [ ! -f package.json ]; then
-    echo "Must run from root directory (containing file 'pom.xml')"
+    echo "Must run from root directory (containing file 'package.json')"
     exit 1
 fi
 
@@ -26,7 +28,7 @@ localrepo=$(pwd)
 email=$(git config user.email)
 name=$(git config user.name)
 
-# Clone existing gh-pages branch to target/gh-pages
+# Create a new git repository for later force-push to gh-pages branch
 mkdir -p target/gh-pages
 cd target/gh-pages
 git init
@@ -37,8 +39,8 @@ git config --local user.name "${name}"
 # Tell GitHub not to run the page through Jekyll
 touch .nojekyll
 
-# Copy contents of the target directory that we want to publish on gh-pages
-cp -Rf "${localrepo}/target/demo" .
+# Copy contents of the target directories that we want to publish on gh-pages
+cp -Rf "${localrepo}/target/demo/" .
 cp -Rf "${localrepo}/target/doc" .
 mkdir coverage
 cp -Rf "${localrepo}/target/coverage/lcov-report/" coverage/

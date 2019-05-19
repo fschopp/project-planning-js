@@ -24,7 +24,7 @@ Algorithm for project planning. More precisely, *list scheduling* with support f
   into a project plan that could be visualized as follows:
   
   ![Project Plan](https://raw.github.com/fschopp/project-planning-js/master/.readme-img/schedule.svg?sanitize=true)
-- See the [interactive demo](https://fschopp.github.io/project-planning-js/demo/) for experimenting with the algorithm, including visualizing its output as shown above.  
+- See the [interactive demo](https://fschopp.github.io/project-planning-js/) for experimenting with the algorithm, including visualizing its output as shown above.
 - No dependencies.
 - Written in TypeScript, but easily usable from JavaScript.
 - Tests have [full code coverage](https://fschopp.github.io/project-planning-js/coverage/).

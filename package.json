@@ -37,9 +37,9 @@
     "test:coverage": "npm run test -- --collect-coverage",
     "compile": "tsc && rollup -c && cp target/js/*.d.ts target/js/*.d.ts.map dist/es6/ && tsc -p src/scripts/ && node target/scripts/clean-sourcemap.js dist/*.map dist/es6/*.map",
     "doc": "typedoc",
-    "demo": "parcel serve --cache-dir target/parcel-cache --out-dir target/demo --public-url /project-planning-js/demo/ src/demo/index.html",
-    "demo:build": "parcel build --cache-dir target/parcel-cache --out-dir target/demo --public-url /project-planning-js/demo/ src/demo/index.html",
-    "package": "npm run clean && npm run lint && npm run test:coverage && npm run compile && npm run doc && npm run demo:build && .scripts/gh_pages.sh"
+    "demo": "parcel serve --cache-dir target/parcel-cache --out-dir target/demo --public-url /project-planning-js/ src/demo/index.html",
+    "demo:build": "parcel build --cache-dir target/parcel-cache --out-dir target/demo --public-url /project-planning-js/ src/demo/index.html",
+    "package": "npm run clean && npm run lint && npm run test:coverage && npm run compile && npm run doc && npm run demo:build && src/scripts/gh_pages.sh"
   },
   "browserslist": [
     "defaults"
