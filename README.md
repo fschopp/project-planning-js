@@ -65,9 +65,9 @@ Of course, the two occurrences of `...` need to be replaced by the current versi
 ```javascript
 let instance = { /* as above */ };
 let schedule = ProjectPlanningJs.computeSchedule(instance);
-// Or compute in a separate thread (using a web worker):
-let promise = ProjectPlanningJs.computeScheduleAsync(instance);
 ```
+
+Due to [cross-origin restrictions for web workers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API), method [`computeScheduleAsync()`](https://fschopp.github.io/project-planning-js/doc/globals.html#computescheduleasync), which runs the algorithm asynchronously in a separate thread, requires serving project-planning-js from the same domain as your website. If the script is served from the CDN, the asynchronous method will not work!
 
 See [JSFiddle](https://jsfiddle.net/fschopp/3Lus0h7e/) for an example.
 
