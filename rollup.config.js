@@ -1,5 +1,14 @@
-import strip from 'rollup-plugin-strip';
+import babel from 'rollup-plugin-babel';
 import { terser } from "rollup-plugin-terser";
+
+function searchAndReplace() {
+  return ['search-and-replace', {
+    rules: [{
+      search: './worker.ts',
+      replace: './worker.js',
+    }]
+  }];
+}
 
 export default [
   {
@@ -10,8 +19,9 @@ export default [
       name: 'ProjectPlanningJs'
     },
     plugins: [
-      strip({
-        functions: ['assert'],
+      babel({
+        presets: ['@babel/preset-env'],
+        plugins: ['babel-plugin-unassert']
       }),
     ],
   },
@@ -23,8 +33,9 @@ export default [
       name: 'ProjectPlanningJs'
     },
     plugins: [
-      strip({
-        functions: ['assert'],
+      babel({
+        presets: ['@babel/preset-env'],
+        plugins: ['babel-plugin-unassert']
       }),
       terser(),
     ],
@@ -37,8 +48,8 @@ export default [
     },
     preserveModules: true,
     plugins: [
-      strip({
-        functions: ['assert'],
+      babel({
+        plugins: ['babel-plugin-unassert', searchAndReplace()]
       }),
     ],
   },

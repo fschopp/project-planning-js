@@ -1,6 +1,12 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    // We rely on Babel for transpiling to older JavaScript where necessary.
+    "target": "es2017",
+
+    // While the TypeScript compiler defaults to "module" = "es6" (given "target" = "es2017"), Parcel does not:
+    // https://github.com/parcel-bundler/parcel/blob/parcel-bundler%401.12.3/packages/core/parcel-bundler/src/assets/TypeScriptAsset.js#L19-L41
+    // We therefore specify module code generation explicitly.
+    "module": "es6",
 
     // Enable all strict type-checking options.
     "strict": true,

@@ -7,6 +7,7 @@
 
 /** API documentation barrier */
 
+import { strict as assert } from 'assert';
 import {
   Job,
   JobFragment,
@@ -17,13 +18,6 @@ import {
   SchedulingInstance,
 } from './api-types';
 import MinHeap from './minheap';
-
-// Notes on assert:
-// 1. console.assert() is not guaranteed to throw an Error. Should that be needed for whatever reason, replace the
-//    following line with:
-//    import { strict as assert } from 'assert';
-// 2. assert() calls will be stripped from the build.
-const assert = console.assert;
 
 /**
  * Type that consists of the union of all properties that are marked as optional through a question mark.
