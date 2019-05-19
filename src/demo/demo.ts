@@ -2,6 +2,7 @@ import IntervalTree from 'node-interval-tree';
 import SVG from 'svg.js';
 import {
   computeSchedule,
+  computeScheduleAsync,
   isSchedulingFailure,
   JobFragment,
   Schedule,
@@ -50,8 +51,9 @@ interface Visualization {
 // very end).
 
 const svgRoot = SVG('drawing').size('100%', 0);
-const instanceInput: HTMLTextAreaElement = document.getElementById('instance')! as HTMLTextAreaElement;
-const scheduleOutput: HTMLTextAreaElement = document.getElementById('schedule')! as HTMLTextAreaElement;
+const instanceInput = document.getElementById('instance')! as HTMLTextAreaElement;
+const separateThread = document.getElementById('chkSeparateThread')! as HTMLInputElement;
+const scheduleOutput = document.getElementById('schedule')! as HTMLTextAreaElement;
 const feedback = document.getElementById('feedback') as HTMLDivElement;
 const feedbackTitle: HTMLElement = feedback.querySelector('strong')!;
 const feedbackMsg: HTMLElement = feedback.querySelector('span')!;
@@ -100,7 +102,7 @@ function computeVisualization(instance: SchedulingInstance, result: Schedule): V
   return visualization;
 }
 
-function createSvg(draw: SVG.Doc, visualization: Visualization) {
+function createSvg(draw: SVG.Doc, visualization: Visualization): void {
   // The first rule sets the font-family only if the SVG is used stand-alone. Otherwise, we want to inherit.
   draw.clear().width('100%').element('style').attr('type', 'text/css').words(`/* <![CDATA[ */
 svg:root {
@@ -188,7 +190,7 @@ svg:root {
   draw.size(drawWidth, Math.ceil(top + SPACING + lengthLabel.bbox().height));
 }
 
-function showAlert(title: string, message: string, alertKind: 'success' | 'warning') {
+function showAlert(title: string, message: string, alertKind: 'success' | 'warning'): void {
   feedbackTitle.innerText = title;
   feedbackMsg.innerText = message;
   feedback.classList.remove(...ALERT_KINDS.map((otherAlertKind) => `alert-${otherAlertKind}`));
@@ -200,7 +202,18 @@ function hideAlert() {
   feedback.classList.toggle('show', false);
 }
 
-function computeAndVisualize() {
+async function compute(...args: Parameters<typeof computeSchedule>): Promise<Schedule> {
+  if (separateThread.checked) {
+    return computeScheduleAsync(...args);
+  } else {
+    const result = computeSchedule(...args);
+    return isSchedulingFailure(result)
+        ? Promise.reject(result)
+        : Promise.resolve(result);
+  }
+}
+
+async function computeAndVisualize(): Promise<void> {
   let instance: SchedulingInstance;
   try {
     instance = JSON.parse(instanceInput.value);
@@ -212,7 +225,7 @@ function computeAndVisualize() {
 
   let schedule: Schedule | SchedulingFailure;
   try {
-    schedule = computeSchedule(instance);
+    schedule = await compute(instance);
   } catch (error) {
     showAlert('Scheduling failed.',
         `The JSON is probably not a valid scheduling instance. Problem (${error.name}): ${error.message}`, 'warning');
@@ -230,7 +243,7 @@ function computeAndVisualize() {
   hideAlert();
 }
 
-function shareLink() {
+function shareLink(): void {
   const json: string = instanceInput.value;
   window.location.replace(`#${SOURCE_PARAM_NAME}=${encodeURIComponent(instanceInput.value)}`);
   hashFromShareLink = window.location.hash;
@@ -253,7 +266,7 @@ function shareLink() {
   showAlert(title, message, alertKind);
 }
 
-function loadFromHash() {
+async function loadFromHash(): Promise<void> {
   // Ignore change of hash (once) if the hash is the one previously set in shareLink().
   if (window.location.hash === hashFromShareLink) {
     hashFromShareLink = '';
@@ -270,7 +283,7 @@ function loadFromHash() {
       showAlert('Invalid URL.', 'Cannot parse the given URL.', 'warning');
       return;
     }
-    computeAndVisualize();
+    await computeAndVisualize();
   }
 }
 
@@ -292,4 +305,4 @@ window.onhashchange = loadFromHash;
 
 // Initialization
 
-loadFromHash();
+loadFromHash().finally();

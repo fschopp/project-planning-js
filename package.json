@@ -1,6 +1,6 @@
 {
   "name": "@fschopp/project-planning-js",
-  "version": "1.0.1-SNAPSHOT",
+  "version": "1.1.0-SNAPSHOT",
   "description": "Algorithm for project planning. More precisely, *list scheduling* with support for machines running at different speeds, optional preemption, optional splitting of jobs across machines, release dates, and delivery times.",
   "keywords": [
     "project planning",
@@ -67,6 +67,9 @@
     "typescript": "^3.4.5"
   },
   "jest": {
+    "collectCoverageFrom": [
+      "**/src/main/**/*.ts?(x)"
+    ],
     "coverageDirectory": "target/coverage",
     "testMatch": [
       "**/src/spec/**/*.ts?(x)"

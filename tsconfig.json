@@ -30,7 +30,10 @@
     // are not meant to be exported (with option "excludeExternals").
     "src/main/api-types.ts",
     "src/main/index.ts",
-    "src/main/scheduling.ts"
+    "src/main/scheduling.ts",
+    "src/main/scheduling-async.ts",
+    "src/main/umd/index.ts",
+    "src/main/worker.ts"
   ],
   "typedocOptions": {
     "excludePrivate": true,

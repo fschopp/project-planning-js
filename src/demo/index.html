@@ -23,8 +23,16 @@
   "minFragmentSize": 0
 }</textarea>
     </div>
-    <button id="btnRefresh" type="button" class="mb-3">Compute Schedule</button>
-    <button id="btnShare" type="button" class="mb-3">Share</button>
+
+    <div class="form-inline">
+      <button id="btnRefresh" type="button" class="mb-3 mr-3">Compute Schedule</button>
+      <div class="form-group form-check mr-auto mb-3 mr-3">
+        <input type="checkbox" class="form-check-input" id="chkSeparateThread">
+        <label class="form-check-label" for="chkSeparateThread">Compute using separate thread</label>
+      </div>
+      <button id="btnShare" type="button" class="mb-3">Share</button>
+    </div>
+
     <div id="feedback" class="alert alert-success alert-dismissible fade" role="alert">
       <strong>Holy guacamole!</strong>
       <span>You should check in on some of those fields below.</span>
@@ -47,4 +55,8 @@
   </div>
 </footer>
 
+<!-- Required because our browserslist settings includes older browsers without async/await support. Hence, the
+     transpilation results in code for which a runtime component is necessary. -->
+<script src="https://cdn.jsdelivr.net/npm/@babel/polyfill@7.4.4/dist/polyfill.min.js"
+  integrity="sha256-lu1gm0Fb5u5n6tuNLefOZNE96ckovOjhNzvsl+Iz50w=" crossorigin="anonymous"></script>
 <script src="demo.ts"></script>

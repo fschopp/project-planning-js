@@ -12,7 +12,7 @@ function searchAndReplace() {
 
 export default [
   {
-    input: 'target/js/index.js',
+    input: 'target/js/umd/index.js',
     output: {
       file: 'dist/index.js',
       format: 'umd',
@@ -26,7 +26,7 @@ export default [
     ],
   },
   {
-    input: 'target/js/index.js',
+    input: 'target/js/umd/index.js',
     output: {
       file: 'dist/index.min.js',
       format: 'umd',
@@ -41,7 +41,7 @@ export default [
     ],
   },
   {
-    input: 'target/js/index.js',
+    input: ['target/js/index.js', 'target/js/worker.js'],
     output: {
       dir: 'dist/es6/',
       format: 'esm'

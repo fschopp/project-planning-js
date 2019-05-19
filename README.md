@@ -65,6 +65,8 @@ Of course, the two occurrences of `...` need to be replaced by the current versi
 ```javascript
 let instance = { /* as above */ };
 let schedule = ProjectPlanningJs.computeSchedule(instance);
+// Or compute in a separate thread (using a web worker):
+let promise = ProjectPlanningJs.computeScheduleAsync(instance);
 ```
 
 See [JSFiddle](https://jsfiddle.net/fschopp/3Lus0h7e/) for an example.
