@@ -8,6 +8,13 @@
     "align": false,
     "array-type": [true, "array"],
     "interface-name": false,
+    "max-line-length": [
+      true,
+      {
+        "limit": 120,
+        "ignore-pattern": "^\\s*\\*\\s\\[[^\\]]+\\]\\([^)]+\\)\\)?[.,;]?$|^\\s*//\\shttp[^\\s]+$"
+      }
+    ],
     "member-ordering": [
       true,
       {

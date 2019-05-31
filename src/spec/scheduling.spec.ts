@@ -1,11 +1,11 @@
 import {
+  computeSchedule,
   isSchedulingFailure,
   JobFragment,
   JobSplitting,
   Schedule,
   SchedulingInstance,
-} from '../main/api-types';
-import { computeSchedule } from '../main/scheduling';
+} from '../main';
 
 interface SimplifiedJobFragment extends Partial<JobFragment> {
   machine: number;

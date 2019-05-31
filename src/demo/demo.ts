@@ -245,7 +245,7 @@ async function computeAndVisualize(): Promise<void> {
 
 function shareLink(): void {
   const json: string = instanceInput.value;
-  window.location.replace(`#${SOURCE_PARAM_NAME}=${encodeURIComponent(instanceInput.value)}`);
+  window.location.replace(`#${SOURCE_PARAM_NAME}=${encodeURIComponent(json)}`);
   hashFromShareLink = window.location.hash;
   let decodedHash: string | undefined;
   try {

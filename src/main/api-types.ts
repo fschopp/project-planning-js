@@ -1,7 +1,17 @@
 /**
  * Enumeration of the job-splitting options.
  */
-export const enum JobSplitting {
+export enum JobSplitting {
+  // Note that this is deliberately not a const enum. The TypeScript compiler inlines const enums, which means that the
+  // generated declaration file is *required* for compiling into valid JavaScript. However, the declaration file may not
+  // always be taken into consideration or even available. For example, the parcel bundler uses `transpileModule()` for
+  // TypeScript assets:
+  // https://github.com/parcel-bundler/parcel/blob/parcel-bundler%401.12.3/packages/core/parcel-bundler/src/assets/TypeScriptAsset.js#L46-L49
+  // However, `transpileModule()` is just a simple transform function:
+  // https://github.com/Microsoft/TypeScript/wiki/Using-the-Compiler-API#a-simple-transform-function
+  // It does not look at any imports at all:
+  // https://github.com/Microsoft/TypeScript/issues/5243
+
   /**
    * The job needs to be executed by a single machine en bloc (that is, with a single job fragment).
    */
@@ -145,9 +155,9 @@ export interface JobFragment {
 /**
  * A scheduled job consists of one or more job fragments.
  *
- * The job fragments are sorted by {@link JobFragment.end} and {@link JobFragment.machine} (in that order). They are
- * guaranteed to not overlap. Moreover, if `a` and `b` are two consecutive job fragments with `a.end === b.start`, then
- * they differ in at least one property besides `start` and `end`.
+ * The job fragments are sorted by {@link JobFragment.end} and {@link JobFragment.machine} (in that order). Fragments on
+ * the same machine are guaranteed to not overlap. Moreover, if `a` and `b` are two consecutive job fragments on the
+ * same machine with `a.end === b.start`, then they differ in {@link JobFragment.isWaiting}.
  */
 export type ScheduledJob = JobFragment[];
 

@@ -51,8 +51,8 @@ const JOB_DEFAULTS = Object.freeze<OnlyOptionals<Job>>({
  */
 export function computeSchedule(instance: SchedulingInstance): Schedule | SchedulingFailure {
   const nonNegativeInteger = (number: number) => number >= 0 && Number.isInteger(number);
-  const nonNegativeIntegers = (numbers: number[]) =>
-      numbers.filter((number) => !nonNegativeInteger(number)).length === 0;
+  const positiveIntegers = (numbers: number[]) =>
+      numbers.filter((number) => number <= 0 || !Number.isInteger(number)).length === 0;
   const undefinedOrNonNegativeInteger = (number: number | undefined) =>
       number === undefined || nonNegativeInteger(number);
   const undefinedOrNonNegativeIntegers = (...numbers: (number | undefined)[]) =>
@@ -68,7 +68,7 @@ export function computeSchedule(instance: SchedulingInstance): Schedule | Schedu
   if (numMachines === 0) {
     return 'At least one machine is required to compute a schedule.';
   } else if (
-      !nonNegativeIntegers(instance.machineSpeeds) ||
+      !positiveIntegers(instance.machineSpeeds) ||
       instance.jobs.filter((job) =>
           !nonNegativeInteger(job.size) ||
           !undefinedOrNonNegativeIntegers(job.deliveryTime, job.releaseTime) ||
