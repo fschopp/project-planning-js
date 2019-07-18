@@ -1,6 +1,6 @@
 {
   "name": "@fschopp/project-planning-js",
-  "version": "1.1.1",
+  "version": "1.1.2-SNAPSHOT",
   "description": "Algorithm for project planning. More precisely, *list scheduling* with support for machines running at different speeds, optional preemption, optional splitting of jobs across machines, release dates, and delivery times.",
   "keywords": [
     "project planning",
@@ -35,11 +35,11 @@
     "lint": "tslint --format verbose --project .",
     "test": "jest",
     "test:coverage": "npm run test -- --collect-coverage",
-    "compile": "tsc && rollup -c && cp target/js/*.d.ts target/js/*.d.ts.map dist/es6/ && tsc -p src/scripts/ && node target/scripts/clean-sourcemap.js dist/*.map dist/es6/*.map",
+    "prepare": "tsc && rollup -c && cp target/js/*.d.ts target/js/*.d.ts.map dist/es6/ && tsc -p src/scripts/ && node target/scripts/clean-sourcemap.js dist/*.map dist/es6/*.map",
     "doc": "typedoc",
     "demo": "parcel serve --cache-dir target/parcel-cache --out-dir target/demo --public-url /project-planning-js/ src/demo/index.html",
     "demo:build": "parcel build --cache-dir target/parcel-cache --out-dir target/demo --public-url /project-planning-js/ src/demo/index.html",
-    "package": "npm run clean && npm run lint && npm run test:coverage && npm run compile && npm run doc && npm run demo:build && src/scripts/gh_pages.sh"
+    "package": "npm run clean && npm run lint && npm run test:coverage && npm run prepare && npm run doc && npm run demo:build && src/scripts/gh_pages.sh"
   },
   "browserslist": [
     "defaults"
@@ -48,25 +48,24 @@
     "node": ">=10.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.4",
-    "@babel/preset-env": "^7.4.4",
-    "@types/jest": "^24.0.13",
-    "@types/node": "^12.0.2",
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@types/jest": "^24.0.15",
+    "@types/node": "^12.6.8",
     "babel-plugin-search-and-replace": "^1.0.0",
     "babel-plugin-unassert": "^3.0.1",
-    "coveralls": "^3.0.3",
     "jest": "^24.8.0",
     "node-interval-tree": "^1.3.3",
     "parcel-bundler": "^1.12.3",
-    "rollup": "^1.12.0",
-    "rollup-plugin-babel": "^4.3.2",
+    "rollup": "^1.17.0",
+    "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-sourcemaps": "^0.4.2",
-    "rollup-plugin-terser": "^4.0.4",
+    "rollup-plugin-terser": "^5.1.1",
     "svg.js": "^2.7.1",
     "ts-jest": "^24.0.2",
-    "tslint": "^5.16.0",
+    "tslint": "^5.18.0",
     "typedoc": "^0.14.2",
-    "typescript": "^3.4.5"
+    "typescript": "^3.5.3"
   },
   "jest": {
     "collectCoverageFrom": [

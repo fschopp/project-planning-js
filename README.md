@@ -4,6 +4,7 @@ Algorithm for project planning. More precisely, *list scheduling* with support f
 
 [![Build Status](https://travis-ci.org/fschopp/project-planning-js.svg?branch=master)](https://travis-ci.org/fschopp/project-planning-js)
 [![Coverage Status](https://coveralls.io/repos/github/fschopp/project-planning-js/badge.svg?branch=master)](https://coveralls.io/github/fschopp/project-planning-js?branch=master)
+[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/fschopp/project-planning-js.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/fschopp/project-planning-js/context:javascript)
 [![npm](https://img.shields.io/npm/v/@fschopp/project-planning-js.svg)](https://www.npmjs.com/package/@fschopp/project-planning-js)
 
 ## Overview

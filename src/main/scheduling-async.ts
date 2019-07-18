@@ -1,6 +1,5 @@
 import { strict as assert } from 'assert';
 import { isSchedulingFailure, Schedule, SchedulingFailure } from './api-types';
-import { computeSchedule } from './scheduling';
 import { ComputeScheduleParameters, ComputeScheduleReturnType, workerFactory } from './worker-interface';
 
 /**
@@ -9,7 +8,7 @@ import { ComputeScheduleParameters, ComputeScheduleReturnType, workerFactory } f
  *
  * See [the project page](https://github.com/fschopp/project-planning-js) for more information on the algorithm.
  *
- * @param args argument list that will be passed on to {@link computeSchedule} unaltered
+ * @param args argument list that will be passed on to {@link computeSchedule}() unaltered
  * @return promise that will be resolved with the solution or rejected with a {@link SchedulingFailure} containing a
  *     human-readable failure description if the problem instance is invalid (for example, has a cyclic dependency
  *     graph)
