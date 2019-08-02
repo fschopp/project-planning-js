@@ -87,6 +87,25 @@ describe('schedule() handles edge cases and invalid input', () => {
     ];
     expect(schedule).toEqual(expected);
   });
+
+  test('dependency on job with processing time 0', () => {
+    const simpleInstance: SchedulingInstance = {
+      machineSpeeds: [2, 3],
+      jobs: [
+        {size: 4},
+        {size: 12},
+        {size: 0, dependencies: [0, 1]},
+        {size: 1, dependencies: [2]},
+      ],
+    };
+    const result: SimplifiedSchedule = [
+      [{machine: 0, start: 0, end: 2}],
+      [{machine: 1, start: 0, end: 4}],
+      [],
+      [{machine: 0, start: 4, end: 5}],
+    ];
+    expect(computeSchedule(simpleInstance)).toEqual(completeSchedule(result));
+  });
 });
 
 describe('schedule() handles optional job properties', () => {

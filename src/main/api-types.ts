@@ -36,13 +36,20 @@ export interface Job {
   /**
    * The processing requirement of a job (or, more succinctly, the job size).
    *
-   * The actual *processing time* of a job (or job fragment) on a machine with speed `speed` is `size / speed`. This is
-   * the amount of time the machine is busy. In addition, a job may also have a delivery time. During that time, the
-   * machine is already available again and can process other jobs.
+   * The actual *processing time* of a job (or job fragment) on a machine with speed `speed` is
+   * `Math.ceil(size / speed)`. This is the amount of time the machine is busy. In addition, a job may also have a
+   * delivery time. During that time, the machine is already available again and can process other jobs.
    *
    * If the job size is 0, the corresponding {@link ScheduledJob} will contain no {@link JobFragment} for *processing*
    * this job. However, if {@link deliveryTime} is greater than 0, there would still be a job fragment for the delivery
    * time (which starts at time 0).
+   *
+   * Jobs with both {@link size} and {@link deliveryTime} equal to 0 are explicitly allowed. They can be useful to
+   * specify a dependency between *sets* of jobs. For example, suppose `A` and `B` are disjoint sets of `n` and `m`
+   * jobs, respectively. Suppose each job in `B` depends on all jobs in `A`. However, instead of introducing `m * n`
+   * dependencies, it is easier to introduce a dummy job `c` with {@link size} and {@link deliveryTime} equal to 0 and
+   * with a dependency on each job in `A`. Moreover, each job in `B` depends on `c`. This way, only `m + n` dependencies
+   * are necessary to express the set-dependency.
    */
   size: number;
 

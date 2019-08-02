@@ -390,20 +390,27 @@ class ListScheduling {
     return lastTimestamp;
   }
 
+  /**
+   * Adds the given delivery time on the given machine to the given job schedule, and returns the overall completion
+   * time of the job.
+   */
   private static scheduleDeliveryTime(machineIdx: number, processingCompletionTime: number, deliveryTime: number,
-      scheduledJob: ScheduledJob) {
+      scheduledJob: ScheduledJob): number {
     assert(Number.isInteger(deliveryTime), 'Invalid arguments');
     assert(scheduledJob.length > 0 ? processingCompletionTime === scheduledJob[scheduledJob.length - 1].end : true,
         'Processing completion time is end timestamp of last job fragment');
+    let completionTime: number = processingCompletionTime;
     if (deliveryTime > 0) {
+      completionTime += deliveryTime;
       const deliveryJobFragment: JobFragment = {
         machine: machineIdx,
         start: processingCompletionTime,
-        end: processingCompletionTime + deliveryTime,
+        end: completionTime,
         isWaiting: true,
       };
       scheduledJob.push(deliveryJobFragment);
     }
+    return completionTime;
   }
 
   private allMachines(): AvailableMachineIndices {
@@ -457,6 +464,7 @@ class ListScheduling {
 
     const allMachines: AvailableMachineIndices = this.allMachines();
     const newSchedule: Schedule = this.jobs_.map((ignoredJob) => []);
+    const finishTimes: number[] = this.jobs_.map((ignoredJob) => -1);
     let numScheduledJobs = 0;
     const noDependencyNodesHeap = new MinHeap<JobGraphNode>(noDependencyNodes, (left, right) => left.idx - right.idx);
     while (!noDependencyNodesHeap.isEmpty()) {
@@ -464,10 +472,9 @@ class ListScheduling {
       const job = this.jobs_[jobGraphNode.idx];
       const isPreemptible: boolean = job.splitting !== JobSplitting.NONE;
       const earliestStartTime = job.dependencies.reduce((previousEarliestStartTime, dependencyIdx) => {
-        const dependency: ScheduledJob = newSchedule[dependencyIdx];
-        assert(dependency.length > 0, 'Dependencies are scheduled before their dependents');
-        const lastJobFragment: JobFragment = dependency[dependency.length - 1];
-        return Math.max(previousEarliestStartTime, lastJobFragment.end);
+        const dependencyFinishTime: number = finishTimes[dependencyIdx];
+        assert(dependencyFinishTime >= 0, 'Dependencies are scheduled before their dependents');
+        return Math.max(previousEarliestStartTime, dependencyFinishTime);
       }, job.releaseTime);
       let availableMachines: AvailableMachineIndices = allMachines;
       let deliveryMachineIdx: number | undefined;
@@ -494,7 +501,7 @@ class ListScheduling {
       assert(deliveryMachineIdx !== undefined);
       const completionTime: number = this.scheduleJob(
           availableMachines, job.size, isPreemptible, earliestStartTime, newSchedule[jobGraphNode.idx]);
-      ListScheduling.scheduleDeliveryTime(
+      finishTimes[jobGraphNode.idx] = ListScheduling.scheduleDeliveryTime(
           deliveryMachineIdx!, completionTime, job.deliveryTime, newSchedule[jobGraphNode.idx]);
       ++numScheduledJobs;
       for (const dependent of jobGraphNode.dependents) {

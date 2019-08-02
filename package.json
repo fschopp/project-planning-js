@@ -1,6 +1,6 @@
 {
   "name": "@fschopp/project-planning-js",
-  "version": "1.1.2-SNAPSHOT",
+  "version": "1.1.2",
   "description": "Algorithm for project planning. More precisely, *list scheduling* with support for machines running at different speeds, optional preemption, optional splitting of jobs across machines, release dates, and delivery times.",
   "keywords": [
     "project planning",
@@ -50,21 +50,22 @@
   "devDependencies": {
     "@babel/core": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
-    "@types/jest": "^24.0.15",
-    "@types/node": "^12.6.8",
+    "@types/jest": "^24.0.16",
+    "@types/node": "^12.6.9",
     "babel-plugin-search-and-replace": "^1.0.0",
     "babel-plugin-unassert": "^3.0.1",
     "jest": "^24.8.0",
     "node-interval-tree": "^1.3.3",
     "parcel-bundler": "^1.12.3",
-    "rollup": "^1.17.0",
+    "regenerator-runtime": "^0.13.3",
+    "rollup": "^1.18.0",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-sourcemaps": "^0.4.2",
     "rollup-plugin-terser": "^5.1.1",
     "svg.js": "^2.7.1",
     "ts-jest": "^24.0.2",
     "tslint": "^5.18.0",
-    "typedoc": "^0.14.2",
+    "typedoc": "^0.15.0",
     "typescript": "^3.5.3"
   },
   "jest": {
