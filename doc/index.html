@@ -1,0 +1,329 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>@fschopp/project-planning-js</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.js" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">@fschopp/project-planning-js</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="globals.html">Globals</a>
+				</li>
+			</ul>
+			<h1> @fschopp/project-planning-js</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<p>Algorithm for project planning. More precisely, <em>list scheduling</em> with support for machines running at different speeds, optional preemption, optional splitting of jobs across machines, release dates, and delivery times.</p>
+				<a href="#status" id="status" style="color: inherit; text-decoration: none;">
+					<h2>Status</h2>
+				</a>
+				<p><a href="https://travis-ci.org/fschopp/project-planning-js"><img src="https://travis-ci.org/fschopp/project-planning-js.svg?branch=master" alt="Build Status"></a>
+					<a href="https://coveralls.io/github/fschopp/project-planning-js?branch=master"><img src="https://coveralls.io/repos/github/fschopp/project-planning-js/badge.svg?branch=master" alt="Coverage Status"></a>
+					<a href="https://lgtm.com/projects/g/fschopp/project-planning-js/context:javascript"><img src="https://img.shields.io/lgtm/grade/javascript/g/fschopp/project-planning-js.svg?logo=lgtm&logoWidth=18" alt="Language grade: JavaScript"></a>
+				<a href="https://www.npmjs.com/package/@fschopp/project-planning-js"><img src="https://img.shields.io/npm/v/@fschopp/project-planning-js.svg" alt="npm"></a></p>
+				<a href="#overview" id="overview" style="color: inherit; text-decoration: none;">
+					<h2>Overview</h2>
+				</a>
+				<ul>
+					<li><p>Transforms input of the following form</p>
+						<pre><code class="language-json">{
+  <span class="hljs-attr">"machineSpeeds"</span>: [<span class="hljs-number">40</span>, <span class="hljs-number">8</span>, <span class="hljs-number">15</span>],
+  <span class="hljs-attr">"jobs"</span>: [
+    {<span class="hljs-attr">"size"</span>: <span class="hljs-number">240</span>, <span class="hljs-attr">"preAssignment"</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">"releaseTime"</span>: <span class="hljs-number">40</span>, <span class="hljs-attr">"splitting"</span>: <span class="hljs-string">"none"</span>},
+    {<span class="hljs-attr">"size"</span>: <span class="hljs-number">640</span>, <span class="hljs-attr">"preAssignment"</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">"splitting"</span>: <span class="hljs-string">"preemption"</span>},
+    {<span class="hljs-attr">"size"</span>: <span class="hljs-number">3200</span>, <span class="hljs-attr">"splitting"</span>: <span class="hljs-string">"multi"</span>, <span class="hljs-attr">"dependencies"</span>: [<span class="hljs-number">3</span>]},
+    {<span class="hljs-attr">"size"</span>: <span class="hljs-number">3200</span>, <span class="hljs-attr">"deliveryTime"</span>: <span class="hljs-number">20</span>, <span class="hljs-attr">"splitting"</span>: <span class="hljs-string">"multi"</span>, <span class="hljs-attr">"preAssignment"</span>: <span class="hljs-number">2</span>}
+  ],
+  <span class="hljs-attr">"minFragmentSize"</span>: <span class="hljs-number">320</span>
+}</code></pre>
+						<p>into a project plan that could be visualized as follows:</p>
+						<p><img src="https://raw.github.com/fschopp/project-planning-js/master/.readme-img/schedule.svg?sanitize=true" alt="Project Plan"></p>
+					</li>
+					<li><p>See the <a href="https://fschopp.github.io/project-planning-js/">interactive demo</a> for experimenting with the algorithm, including visualizing its output as shown above.</p>
+					</li>
+					<li><p>No dependencies.</p>
+					</li>
+					<li><p>Written in TypeScript, but easily usable from JavaScript.</p>
+					</li>
+					<li><p>Tests have <a href="https://fschopp.github.io/project-planning-js/coverage/">full code coverage</a>.</p>
+					</li>
+				</ul>
+				<a href="#license" id="license" style="color: inherit; text-decoration: none;">
+					<h2>License</h2>
+				</a>
+				<p><a href="LICENSE">Apache License 2.0</a></p>
+				<a href="#releases-and-usage" id="releases-and-usage" style="color: inherit; text-decoration: none;">
+					<h2>Releases and Usage</h2>
+				</a>
+				<p>Published releases include TypeScript type declarations and are available as either <a href="https://github.com/umdjs/umd">UMD</a> or ECMAScript 2015 (aka ES6) modules.</p>
+				<a href="#nodejs" id="nodejs" style="color: inherit; text-decoration: none;">
+					<h3>Node.js</h3>
+				</a>
+				<p>Install with <code>npm install @fschopp/project-planning-js</code> or <code>yarn add @fschopp/project-planning-js</code>. Use the package as follows (example is in TypeScript, but ES6 JavaScript essentially reads the same, minus the types):</p>
+				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> {
+  computeSchedule,
+  Schedule,
+  SchedulingFailure,
+  SchedulingInstance,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">'@fschopp/project-planning-js'</span>;
+<span class="hljs-keyword">const</span> instance: SchedulingInstance = {
+  machineSpeeds: [ <span class="hljs-comment">/* ... */</span> ],
+  jobs: [ <span class="hljs-comment">/* ... */</span> ]
+};
+<span class="hljs-keyword">const</span> schedule: Schedule | SchedulingFailure = computeSchedule(instance);</code></pre>
+				<a href="#browser" id="browser" style="color: inherit; text-decoration: none;">
+					<h3>Browser</h3>
+				</a>
+				<p>Include the minified sources from the <a href="https://www.jsdelivr.com/package/npm/@fschopp/project-planning-js">jsDelivr CDN</a>:</p>
+				<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://cdn.jsdelivr.net/npm/@fschopp/project-planning-js@.../dist/index.min.js"</span>
+  <span class="hljs-attr">integrity</span>=<span class="hljs-string">"..."</span> <span class="hljs-attr">crossorigin</span>=<span class="hljs-string">"anonymous"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
+				<p>Of course, the two occurrences of <code>...</code> need to be replaced by the current version and its corresponding <a href="https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity">subresource integrity (SRI)</a> hash. Then, in a subsequent script:</p>
+				<pre><code class="language-javascript"><span class="hljs-keyword">let</span> instance = { <span class="hljs-comment">/* as above */</span> };
+<span class="hljs-keyword">let</span> schedule = ProjectPlanningJs.computeSchedule(instance);</code></pre>
+				<p>Due to <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API">cross-origin restrictions for web workers</a>, method <a href="https://fschopp.github.io/project-planning-js/doc/globals.html#computescheduleasync"><code>computeScheduleAsync()</code></a>, which runs the algorithm asynchronously in a separate thread, requires serving project-planning-js from the same domain as your website. If the script is served from the CDN, the asynchronous method will not work!</p>
+				<p>See <a href="https://jsfiddle.net/fschopp/3Lus0h7e/">JSFiddle</a> for an example.</p>
+				<a href="#project-documentation" id="project-documentation" style="color: inherit; text-decoration: none;">
+					<h2>Project Documentation</h2>
+				</a>
+				<ul>
+					<li><a href="https://fschopp.github.io/project-planning-js/doc/">API documentation</a> generated by TypeDoc.</li>
+				</ul>
+				<a href="#build" id="build" style="color: inherit; text-decoration: none;">
+					<h2>Build</h2>
+				</a>
+				<ul>
+					<li>See the git history to find out the versions of the following development dependencies that were in use at the time of writing.</li>
+					<li>The source code is exclusively written in TypeScript. The TypeScript compiler compiles the source code into ECMAScript 2015 (aka ES6) modules, with a target of ECMAScript 2017. Its output is not yet ready for distribution because newer ECMAScript language features may not yet be widely supported by web browsers or Node.js. Additionally, the output by the TypeScript compiler still contains assertions. Creating the distribution therefore relies on another compilation step with <a href="https://babeljs.io">Babel</a>. Additionally, we also create a minified build.</li>
+					<li>We use <a href="https://rollupjs.org">Rollup</a> for creating the distribution; that is, the final compilation and assembly. The distribution exists in 3 different forms:<ol>
+							<li>A single-file <a href="https://github.com/umdjs/umd">UMD</a> module (at <code>dist/index.js</code>) that is “capable of working everywhere, be it in the client, on the server or elsewhere.” This is what the <a href="https://docs.npmjs.com/files/package.json#main"><code>main</code> property</a> in the <a href="package.json">package.json</a> file references.</li>
+							<li>Same as the previous, but minified.</li>
+							<li>An ES6 module with the same file layout as in the source tree. The only further transformation on the output from the TypeScript compiler is stripping of assertions. The ES6 distribution resides under <code>dist/es6</code>. This is what the <a href="https://github.com/rollup/rollup/wiki/pkg.module"><code>module</code> property</a> in the <a href="package.json">package.json</a> file references.</li>
+						</ol>
+					</li>
+					<li>Rollup invokes Babel indirectly, through the <a href="https://github.com/rollup/rollup-plugin-babel">rollup-plugin-babel</a>.</li>
+					<li>Unfortunately, rollup-plugin-babel does not pick up the <a href="src/main/.babelrc.js">src/main/.babelrc.js</a> file. This leads to a little bit of redundant configuration in <a href="rollup.config.js">rollup.config.js</a>.</li>
+					<li>Parcel, which is used during development and for bundling the demo site, does consider the <a href="src/main/.babelrc.js">src/main/.babelrc.js</a> file, however. (It does not care about the Rollup configuration.) It <a href="https://parceljs.org/javascript.html#default-babel-transforms">uses Babel to transpile ES6 JavaScript by default</a>, without any (additional) configuration.</li>
+					<li>Both rollup-plugin-babel and Parcel consider the <code>browserslist</code> field in file <code>package.json</code>: rollup-plugin-babel <a href="https://github.com/rollup/rollup-plugin-babel/issues/206">delegates entirely to package @babel/preset-env</a> (which then <a href="https://babeljs.io/docs/en/babel-preset-env#browserslist-integration">is mindful of that setting</a>), and <a href="https://github.com/parcel-bundler/parcel/blob/parcel-bundler%401.12.3/packages/core/parcel-bundler/src/utils/getTargetEngines.js#L10-L40">Parcel looks for the field, too</a>.</li>
+					<li>The distribution has <a href="https://developer.mozilla.org/en-US/docs/Tools/Debugger/How_to/Use_a_source_map">source maps</a> that link the final JavaScript to its TypeScript sources. The configuration ensures that source maps of consecutive transformations are correctly merged.</li>
+				</ul>
+				<a href="#algorithm-description" id="algorithm-description" style="color: inherit; text-decoration: none;">
+					<h2>Algorithm Description</h2>
+				</a>
+				<a href="#overview-1" id="overview-1" style="color: inherit; text-decoration: none;">
+					<h3>Overview</h3>
+				</a>
+				<p>This module implements a generalized <em>list scheduling</em> algorithm, a notion first formalized by <a href="https://dx.doi.org/10.1002/j.1538-7305.1966.tb01709.x">Graham (1966)</a>. The algorithm is given a priority list of jobs, and “at each step the available job with the highest ranking [...] is assigned to the first machine that becomes available” (<a href="https://dx.doi.org/10.1016/S0167-5060(08)70356-X">Graham et al., 1979</a>).</p>
+				<p>Our extensions are very common in the literature; see <a href="https://dx.doi.org/10.1016/S0927-0507(05)80189-6">Lawler et al. (1993)</a>.</p>
+				<ol>
+					<li>Machines are <em>uniform</em> (also called <em>related</em>). That is, each machine has a speed <em>s</em><sub><i>i</i></sub> so that the processing time of a job on a particular machine is inversely proportional to that machine’s speed.</li>
+					<li>Each job may optionally be interrupted (known as <em>preemption</em>).</li>
+					<li>Each job may optionally be processed by more than one machine at a time, as long as the processing requirement of each job fragment is not less than a given threshold. (If a job allows splitting across machines, this also includes allowing preemption.)</li>
+					<li>There is a <em>release date</em> <i>r</i><sub><i>j</i></sub> for each job; that is, an earliest start time.</li>
+					<li>There is a <em>delivery time</em> <i>q</i><sub><i>j</i></sub> for each job that must elapse between the end of the job’s processing and the start of any dependent job.</li>
+					<li>As part of the input, each job may already be assigned to a particular machine.</li>
+				</ol>
+				<p>In the three-field notation for theoretical scheduling problems introduced by <a href="https://dx.doi.org/10.1016/S0167-5060(08)70356-X">Graham et al. (1979)</a>, this algorithm is applicable to a superset of Q│prec,<i>r</i><sub><i>j</i></sub>,<i>q</i><sub><i>j</i></sub>│<i>γ</i>. The reasons for “superset” are:</p>
+				<ul>
+					<li>Item 2 allows preemption as a job-specific option (as opposed to preemption being allowed or disallowed for all jobs).</li>
+					<li>Items 3 and 6 above.</li>
+				</ul>
+				<p>A typical optimization goal is <i>γ</i> = <i>C</i><sub>max</sub>; that is, minimizing the maximum completion time, also known as the <em>makespan</em>. However, the list scheduling algorithm is obviously independent of the optimization goal (it is the approximation ratio that is not!).</p>
+				<a href="#details-and-runtime" id="details-and-runtime" style="color: inherit; text-decoration: none;">
+					<h3>Details and Runtime</h3>
+				</a>
+				<ul>
+					<li>List scheduling is a greedy algorithm.</li>
+					<li>Let <i>m</i> be the number of machines, and <i>n</i> the number of jobs. The algorithm repeats the following steps for each job:<ul>
+							<li>Among all remaining available jobs, determine the one that came first on the input list. This requires extracting the minimum from a heap and takes time O(log <i>n</i>).</li>
+							<li>Scheduling a single job takes time O(<i>n</i> + <i>m</i>):<ul>
+									<li>If the job can be split across machines, fill the gaps following the release time. At any time a machine becomes available or unavailable, update the current total speed. The number of gaps on all machines (or equivalently, the number of update steps) is O(<i>n</i>).</li>
+									<li>If the job cannot be split across multiple machines, find the machine which would allow the earliest completion of the job. In aggregate, for all machines, this again may require iterating over O(<i>n</i>) gaps.</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+					<li>The total worst-case runtime is thus O(<i>n</i><sup>2</sup> + <i>n</i> · <i>m</i>). However, assuming that only few gaps will arise in the schedule (for instance, because there are few dependencies, most jobs have no release times, or there are frequently splittable jobs that will fill up the gaps), the run time should be closer to O(<i>n</i> · (<i>m</i> + log <i>n</i>)).</li>
+					<li>In any case, the runtime should rarely be a problem for any scheduling task that one would reasonably want to solve in a web browser.</li>
+				</ul>
+				<a href="#approximation-guarantees" id="approximation-guarantees" style="color: inherit; text-decoration: none;">
+					<h3>Approximation Guarantees</h3>
+				</a>
+				<ul>
+					<li>Even the most simple discrete scheduling problems are NP-hard. This includes, for instance, minimizing the makespan on two identical machines (P2││<i>C</i><sub>max</sub> in short).</li>
+					<li>Worse, in particular when precedence constraints are added, the theoretical understanding of scheduling problems is still limited. For instance, no constant-factor approximation algorithm is known at all for makespan minimization on uniform machines (Q│prec│<i>C</i><sub>max</sub>), and this of course also applies to list scheduling. See <a href="https://dx.doi.org/10.1006/jagm.2001.1184">Chekuri and Bender (2001)</a>.</li>
+					<li>In practice, however, list scheduling is known to perform quite well for natural scheduling problems.</li>
+					<li>On identical machines (all speeds are the same), the list scheduling algorithm performs reasonably well even with precedence constraints. The approximation ratio for makespan minimization in this case (P│prec│<i>C</i><sub>max</sub>) is 2 – (1 / <i>m</i>). See <a href="https://dx.doi.org/10.1002/j.1538-7305.1966.tb01709.x">Graham (1966)</a>.</li>
+					<li><a href="https://archive.org/details/boundsonscheduli632liuj">Liu and Liu (1974)</a> showed that the approximation guarantee for list scheduling on uniform machines becomes much worse: 1 + max <i>s</i><sub><i>i</i></sub> / min <i>s</i><sub><i>i</i></sub> – max <i>s</i><sub><i>i</i></sub> / ∑ <i>s</i><sub><i>i</i></sub>.</li>
+				</ul>
+				<a href="#references" id="references" style="color: inherit; text-decoration: none;">
+					<h2>References</h2>
+				</a>
+				<ul>
+					<li>Chekuri and Bender (2001): “<a href="https://dx.doi.org/10.1006/jagm.2001.1184">An Efficient Approximation Algorithm for Minimizing Makespan on Uniformly Related Machines</a>.”</li>
+					<li>Graham (1966): “<a href="https://dx.doi.org/10.1002/j.1538-7305.1966.tb01709.x">Bounds for Certain Multiprocessing Anomalies</a>.”</li>
+					<li>Graham, Lawler, Lenstra, Rinnooy Kan (1979): “<a href="https://dx.doi.org/10.1016/S0167-5060(08)70356-X">Optimization and Approximation in Deterministic Sequencing and Scheduling: a Survey</a>.”</li>
+					<li>Lawler, Lenstra, Rinnooy Kan, Shmoys (1993): “<a href="https://dx.doi.org/10.1016/S0927-0507(05)80189-6">Sequencing and scheduling: Algorithms and complexity</a>”</li>
+					<li>Liu and Liu (1974): “<a href="https://archive.org/details/boundsonscheduli632liuj">Bounds on scheduling algorithms for heterogeneous computing systems</a>,” Technical Report UIUCDCS-R-74-632, Department of Computer Science, University of Illinois at Urbana-Champaign. </li>
+				</ul>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="globals.html"><em>Globals</em></a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+					<li class=" tsd-kind-enum">
+						<a href="enums/jobsplitting.html" class="tsd-kind-icon">Job<wbr>Splitting</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/job.html" class="tsd-kind-icon">Job</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/jobfragment.html" class="tsd-kind-icon">Job<wbr>Fragment</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/schedulinginstance.html" class="tsd-kind-icon">Scheduling<wbr>Instance</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#schedule" class="tsd-kind-icon">Schedule</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#scheduledjob" class="tsd-kind-icon">Scheduled<wbr>Job</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#schedulingfailure" class="tsd-kind-icon">Scheduling<wbr>Failure</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#computeschedule" class="tsd-kind-icon">compute<wbr>Schedule</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#computescheduleasync" class="tsd-kind-icon">compute<wbr>Schedule<wbr>Async</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#isschedulingfailure" class="tsd-kind-icon">is<wbr>Scheduling<wbr>Failure</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+				<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-enum"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-enum"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
+				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>
